@@ -1,0 +1,47 @@
+{
+  "name": "@ekravo/airport-sdk",
+  "version": "0.1.0",
+  "description": "Browser and Node client for Ekravo Airport",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ekravo/ekravo-airport.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/ekravo/ekravo-airport#readme",
+  "bugs": {
+    "url": "https://github.com/ekravo/ekravo-airport/issues"
+  },
+  "keywords": ["websocket", "relay", "e2ee", "tunnel", "ekravo"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "dependencies": {
+    "@noble/ciphers": "^1.0.0",
+    "@noble/curves": "^1.6.0",
+    "@noble/hashes": "^1.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

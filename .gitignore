@@ -1,0 +1,45 @@
+# Secrets and local configuration — never commit these.
+.env
+.env.*
+tls/
+.proof/
+.e2e-*/
+.cargo-tools/
+.cargo-home/
+.cargo-audit-target/
+.audit-tmp/
+.npm-cache/
+.freebuff/
+!.env.example
+*.pem
+*.key
+
+# Rust
+/target
+**/*.rs.bk
+
+# Airport runtime data
+/data
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.log
+*.tmp
+
+# Node / TypeScript SDK
+node_modules
+packages/sdk/dist
+*.tsbuildinfo
+npm-debug.log*
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

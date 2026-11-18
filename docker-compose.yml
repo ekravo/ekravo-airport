@@ -1,0 +1,30 @@
+services:
+  airport:
+    build: .
+    image: ekravo/airport:0.1.0
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # These override .env so the container always writes to its volume.
+      AIRPORT_DATABASE_URL: sqlite:///var/lib/airport/airport.db
+      AIRPORT_BIND_ADDR: 0.0.0.0:8787
+    ports:
+      # Loopback only by default: put a TLS proxy in front, or change this to
+      # "8787:8787" after deciding the plaintext port is safe to expose.
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - airport-data:/var/lib/airport
+    # Inherits the image healthcheck (plaintext by default). For in-process TLS
+    # use docker-compose.tls.yml, which mounts certificates and points the probe
+    # at https with the signing CA.
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
+volumes:
+  airport-data:

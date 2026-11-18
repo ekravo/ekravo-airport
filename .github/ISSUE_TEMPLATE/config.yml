@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/ekravo/ekravo-airport/security/policy
+    about: Please report suspected vulnerabilities privately, never in a public issue.
+  - name: Documentation
+    url: https://github.com/ekravo/ekravo-airport/blob/main/README.md
+    about: Read the quick start, configuration, and self-hosting documentation first.

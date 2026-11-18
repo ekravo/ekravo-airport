@@ -1,0 +1,36 @@
+name: Feature request
+description: Propose a capability or a public API change.
+title: "[feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Wire-format changes need a compatibility note and tests in both the Rust
+        and TypeScript implementations. Do not include secrets or private data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that Airport does not support today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the API, protocol, or operator-facing change you want.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds, existing endpoints, or other designs you evaluated.
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Compatibility
+      options:
+        - label: This changes the wire protocol or an existing HTTP response shape.
+        - label: I am willing to implement this and add tests.

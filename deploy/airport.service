@@ -1,0 +1,42 @@
+[Unit]
+Description=Ekravo Airport relay
+Documentation=https://github.com/ekravo/ekravo-airport
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=airport
+Group=airport
+EnvironmentFile=/etc/ekravo-airport/airport.env
+ExecStart=/usr/local/bin/airport
+WorkingDirectory=/var/lib/ekravo-airport
+StateDirectory=ekravo-airport
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=20s
+
+# Hardening. Airport needs no privileges at runtime.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectClock=true
+ProtectHostname=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+ReadWritePaths=/var/lib/ekravo-airport
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,45 @@
+[package]
+name = "airport-server"
+description = "Ekravo Airport relay server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "airport"
+path = "src/main.rs"
+
+[dependencies]
+airport-protocol = { path = "../protocol" }
+anyhow = "1"
+argon2 = "0.5"
+axum = { version = "0.8", features = ["ws"] }
+axum-server = { version = "0.9", features = ["tls-rustls"] }
+base64.workspace = true
+bytes = "1"
+dashmap = "6"
+dotenvy = "0.15"
+futures-util = "0.3"
+jsonwebtoken = "9"
+rand = "0.8"
+rustls = "0.23"
+serde.workspace = true
+serde_json.workspace = true
+sha2 = "0.10"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "sqlite", "macros"] }
+subtle = "2"
+thiserror.workspace = true
+time = { version = "0.3.55", features = ["formatting"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "cors", "limit", "set-header"] }
+tracing.workspace = true
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+http-body-util = "0.1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio-tungstenite = "0.24"

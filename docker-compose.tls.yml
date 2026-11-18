@@ -1,0 +1,37 @@
+# Compose stack for Airport terminating TLS itself.
+#
+# Generate tls/ca.pem, tls/server-fullchain.pem, tls/server-key.pem and
+# tls/airport.env as described in docs/self-hosting.md, then:
+#
+#   docker compose -f docker-compose.tls.yml -p airport-tls up -d --build
+#
+# The healthcheck is inherited from the image and pointed at the encrypted
+# listener with the CA that signed the certificate.
+services:
+  airport:
+    build: .
+    image: ekravo/airport:0.1.0
+    restart: unless-stopped
+    environment:
+      # Configuration comes from the mounted file, not from .env.
+      AIRPORT_ENV_FILE: /etc/airport/airport.env
+      AIRPORT_DATABASE_URL: sqlite:///var/lib/airport/airport.db
+      AIRPORT_BIND_ADDR: 0.0.0.0:8787
+      AIRPORT_HEALTHCHECK_URL: https://127.0.0.1:8787/healthz
+      AIRPORT_HEALTHCHECK_CA: /certs/ca.pem
+    ports:
+      - "127.0.0.1:8443:8787"
+    volumes:
+      - airport-tls-data:/var/lib/airport
+      - ./tls:/certs:ro
+      - ./tls/airport.env:/etc/airport/airport.env:ro
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
+volumes:
+  airport-tls-data:
