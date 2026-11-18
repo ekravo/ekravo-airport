@@ -115,11 +115,22 @@ impl Registry {
 
     fn release_user_slot(&self, user_id: &str) {
         if let Some(entry) = self.slots.get(user_id) {
-            let _ = entry
-                .value()
-                .fetch_update(Ordering::AcqRel, Ordering::Acquire, |count| {
-                    count.checked_sub(1)
-                });
+            // Use a compare-exchange loop rather than `fetch_update`: the latter
+            // is deprecated on newer Rust releases (renamed to `try_update`),
+            // while `try_update` is not available on the 1.89 MSRV.
+            let count = entry.value();
+            let mut current = count.load(Ordering::Acquire);
+            while current > 0 {
+                match count.compare_exchange_weak(
+                    current,
+                    current - 1,
+                    Ordering::AcqRel,
+                    Ordering::Acquire,
+                ) {
+                    Ok(_) => break,
+                    Err(observed) => current = observed,
+                }
+            }
         }
         self.slots
             .remove_if(user_id, |_, count| count.load(Ordering::Acquire) == 0);
